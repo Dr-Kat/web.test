@@ -96,5 +96,11 @@ namespace CalculatorTests.Pages
             InvestTermFld.SendKeys(term);
             FinancialYear = int.Parse(financialYear);
         }
+
+        public IWebElement SettingsLink => _driver.FindElement(By.XPath($"//div[contains (text(),'Settings')]"));
+        public void Settings()
+        {
+            SettingsLink.Click();
+        }
     }
 }
