@@ -63,7 +63,7 @@ namespace CalculatorTests
             loginPage.Login(login, password);
 
             // Assert
-            Assert.AreEqual($"{BaseUrl}/Deposit", Driver.Url);
+            Assert.AreEqual($"{BaseUrl}/Calculator", Driver.Url);
         }
 
         [Test]

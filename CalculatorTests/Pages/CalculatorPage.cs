@@ -1,11 +1,7 @@
-﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 
 namespace CalculatorTests.Pages
 {
@@ -29,6 +25,8 @@ namespace CalculatorTests.Pages
         public IWebElement RateInterestFld => _driver.FindElement(By.XPath($"//td[contains(text(),'Rate of interest: *')]/ ..//input"));
 
         public IWebElement InvestTermFld => _driver.FindElement(By.XPath($"//td[contains(text(),'Investment Term: *')]/ ..//input"));
+
+        public IWebElement CalculateBtn => _driver.FindElement(By.Id("calculateBtn"));
 
         public SelectElement DateDayDrdwn => new SelectElement(_driver.FindElement(By.XPath($"//td[contains(text(),'Start date: *')]/ ..//select[@id='day']")));
 
@@ -95,6 +93,7 @@ namespace CalculatorTests.Pages
             RateInterestFld.SendKeys(rate);
             InvestTermFld.SendKeys(term);
             FinancialYear = int.Parse(financialYear);
+            CalculateBtn.Click();
         }
 
         public IWebElement SettingsLink => _driver.FindElement(By.XPath($"//div[contains (text(),'Settings')]"));

@@ -1,11 +1,5 @@
 ﻿using CalculatorTests.Pages;
 using NUnit.Framework;
-using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CalculatorTests
 {
@@ -28,7 +22,7 @@ namespace CalculatorTests
             calculatorPage.Settings();
         }
 
-        [TestCase("DD/MM/YYYY")]
+        [TestCase("dd/MM/yyyy")]
         public void SettingsSavedTextAllert(string dateFormat)
         {
             settingsPage = new SettingsPage(Driver);
@@ -44,17 +38,17 @@ namespace CalculatorTests
         {
             settingsPage = new SettingsPage(Driver);
             string defaultDateFormat = settingsPage.DateFormatValue;
-            settingsPage.DateFormat = "DD/MM/YYYY";
+            settingsPage.DateFormat = "dd/MM/yyyy";
             settingsPage.CancelBtn.Click();
             calculatorPage.Settings();
 
             Assert.AreEqual(defaultDateFormat, settingsPage.DateFormatValue);
         }
 
-        [TestCase("DD/MM/YYYY", "123,456,789.00", "$ - US dollar")]
-        [TestCase("DD-MM-YYYY", "123.456.789,00", "€ - Euro")]
-        [TestCase("MM/DD/YYYY", "123 456 789.00", "£ - Great Britain Pound")]
-        [TestCase("MMM DD YYYY", "123 456 789,00", "£ - Great Britain Pound")]
+        [TestCase("dd/MM/yyyy", "123,456,789.00", "$ - US dollar")]
+        [TestCase("dd-MM-yyyy", "123.456.789,00", "€ - Euro")]
+        [TestCase("MM/dd/yyyy", "123 456 789.00", "£ - Great Britain Pound")]
+        [TestCase("MM dd yyyy", "123 456 789,00", "£ - Great Britain Pound")]
 
         public void SettingsSaved(string dateFormat, string numberFormat, string defaultCurrency)
         {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Callculator.Controllers
+namespace WebSite.Controllers
 {
     [Route("api/[controller]")]
 	public class DepositController : Controller
