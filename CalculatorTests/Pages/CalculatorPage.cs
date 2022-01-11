@@ -25,6 +25,8 @@ namespace CalculatorTests.Pages
                 return _driver.FindElement(By.XPath($"//td[contains(text(),'Deposit Amount: *')]/ ..//input"));
             }
         }
+        public IWebElement DepAmountSign => _driver.FindElement(By.XPath($"//td[contains(text(),'Deposit Amount: *')]/ ..//td[3]"));
+
 
         public IWebElement RateInterestFld => _driver.FindElement(By.XPath($"//td[contains(text(),'Rate of interest: *')]/ ..//input"));
 

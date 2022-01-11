@@ -21,13 +21,13 @@ namespace CalculatorTests.Pages
         public IWebElement CancelBtn => _driver.FindElement(By.XPath($"//button[contains(text(),'Cancel')]"));
 
 
-        public SelectElement DateFormatDrdwn => new SelectElement(_driver.FindElement(By.XPath($"//th[contains(text(),'Date format:')]/ ..//select")));
-        public SelectElement NumberFormatDrdwn => new SelectElement(_driver.FindElement(By.XPath($"//th[contains(text(),'Number format:')]/ ..//select")));
+        public SelectElement DateFormatDrdwn => new SelectElement(_driver.FindElement(By.XPath($"//td[contains(text(),'Date format:')]/ ..//select")));
+        public SelectElement NumberFormatDrdwn => new SelectElement(_driver.FindElement(By.XPath($"//td[contains(text(),'Number format:')]/ ..//select")));
         public SelectElement DefaultCurrencyDrdwn => new SelectElement(_driver.FindElement(By.XPath($"//th[contains(text(),'Default currency:')]/ ..//select")));
 
-        public string DateFormatValue => _driver.FindElement(By.XPath($"//th[contains(text(),'Date format:')]/ ..//select")).GetAttribute("value");
-        public string NumberFormatValue => _driver.FindElement(By.XPath($"//th[contains(text(),'Number format:')]/ ..//select")).GetAttribute("value");
-        public string DefaultCurrencyValue => _driver.FindElement(By.XPath($"//th[contains(text(),'Default currency:')]/ ..//select")).GetAttribute("value");
+        public string DateFormatValue => _driver.FindElement(By.XPath($"//td[contains(text(),'Date format:')]/ ..//select")).GetAttribute("value");
+        public string NumberFormatValue => _driver.FindElement(By.XPath($"//td[contains(text(),'Number format:')]/ ..//select")).GetAttribute("value");
+        public string DefaultCurrencyValue => _driver.FindElement(By.XPath($"//th[contains(text(),'Defalut currency:')]/ ..//select")).GetAttribute("value");
 
         public (bool IsSuccessful, string Text) SettingsSave()
         {

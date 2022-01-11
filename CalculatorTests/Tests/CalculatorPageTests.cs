@@ -134,6 +134,18 @@ namespace CalculatorTests
             Assert.AreEqual(result, calculatorPage.EndDate);          
         }
 
+        //[TestCase("10/12/2023", "120", "08/04/2024")]
+        //public void StartDateEarlierThenToday(string date, string term, string result)
+        //{
+        //    // Act
+        //    calculatorPage = new CalculatorPage(Driver);
+        //    calculatorPage.StartDate = date;
+        //    calculatorPage.InvestTermFld.SendKeys(term);
+
+        //    // Assert
+        //    Assert.AreEqual(result, calculatorPage.EndDate);
+        //}
+
         [Test]
 
         public void StartDateDefaultValue()

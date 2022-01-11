@@ -51,7 +51,7 @@ namespace CalculatorTests
             Assert.AreEqual(defaultDateFormat, settingsPage.DateFormatValue);
         }
 
-        [TestCase("DD/MM/YYYY", "123,456,789.00", "$ - US dollar")]
+        [TestCase("DD/MM/YYYY", "123,456,789.00", "$ - US Dollar")]
         [TestCase("DD-MM-YYYY", "123.456.789,00", "€ - Euro")]
         [TestCase("MM/DD/YYYY", "123 456 789.00", "£ - Great Britain Pound")]
         [TestCase("MMM DD YYYY", "123 456 789,00", "£ - Great Britain Pound")]
@@ -62,7 +62,10 @@ namespace CalculatorTests
             settingsPage.DateFormat = dateFormat;
             settingsPage.NumberFormat = numberFormat;
             settingsPage.CurrencyFormat = defaultCurrency;
+            //settingsPage.SaveBtn.Click();
+            //Driver.SwitchTo().Alert().Accept();
             settingsPage.SettingsSave();
+            //Driver.SwitchTo().Alert().Accept();
             calculatorPage.Settings();
 
             Assert.Multiple(() =>
@@ -99,6 +102,29 @@ namespace CalculatorTests
                 //    // Assert          
                 //    Assert.AreEqual("0.00", interest);
             }
+        }
+
+        //[TestCase(currentDate)]
+        //[TestCase("90236")]
+        //[TestCase(Euro)]
+        public void SettingsChanged()
+        {
+
+
+
+        }
+
+        [TestCase("$ - US dollar", "$")]
+        [TestCase("€ - Euro", "€")]
+        [TestCase("£ - Great Britain Pound", "£")]
+        public void CheckSignDefaultCurrencyChanged( string defaultCurrency, string result)
+        {
+            settingsPage = new SettingsPage(Driver);
+            settingsPage.CurrencyFormat = defaultCurrency;
+            settingsPage.SettingsSave();
+
+            Assert.AreEqual(result, calculatorPage.DepAmountSign.Text);
+
         }
     }
 }
