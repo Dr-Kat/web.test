@@ -1,8 +1,6 @@
-﻿using CalculatorTests.Pages;
+﻿using System;
+using CalculatorTests.Pages;
 using NUnit.Framework;
-using OpenQA.Selenium;
-using System;
-using System.Threading;
 
 namespace CalculatorTests
 {
@@ -128,7 +126,7 @@ namespace CalculatorTests
             // Act
             calculatorPage = new CalculatorPage(Driver);
             calculatorPage.StartDate = date;
-            calculatorPage.InvestTermFld.SendKeys(term);
+            calculatorPage.Calculate("100", "1", term, "365");
 
             // Assert
             Assert.AreEqual(result, calculatorPage.EndDate);          

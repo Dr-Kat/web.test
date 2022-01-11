@@ -1,16 +1,16 @@
 ﻿@page
-
 <!DOCTYPE html>
-
 <html>
 <head>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta name="viewport" content="width=device-width" />
     <title>Login</title>
 </head>
 <body>
     <div align="center">
-        <div style="width:500px; height:280px; border:double">
-            <br>Login to the client calculator. Welcome!<br><br>
+        <div style="width: 500px; height: 270px; border: double">
+            <div class="register link btn btn-link" onclick="Register()">Register</div>
+
             <table>
                 <tr>
                     <th class="user">User:</th>
@@ -28,9 +28,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2" align="right">
-                        <button onclick="Login()" title="Login" id="loginBtn">Login</button>
-                        <button onclick="RemindPassword()" title="remind" id="remindBtn">Remind pasword</button>
+                    <td colspan="2" align="right" style="width: 100px" id="buttons">
+                        <button type="button" class="btn btn-sm btn-success" onclick="Login()" title="Login" id="loginBtn">Login</button>
+                        <button type="button" class="btn btn-sm btn-warning remind" onclick="RemindPassword()" title="remind" id="remindBtn">Remind password</button>
                     </td>
                 </tr>
                 <tr>
@@ -38,7 +38,7 @@
                 </tr>
                 <tr>
                     <td colspan="3">
-                        <iframe id="remindPasswordView" hidden src="RemindPassword.html" style="height:130px"></iframe>
+                        <iframe id="remindPasswordView" hidden src="~/RemindPassword.html" style="height: 130px"></iframe>
                     </td>
                 </tr>
             </table>
@@ -47,47 +47,10 @@
 </body>
 </html>
 
-<script type="text/javascript">
-    show = function() {
-        document.getElementById('password').type = "text";
-    }
+<link rel="stylesheet" href="~/css/site.css">
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css">
 
-    hide = function() {
-        document.getElementById('password').type = "password";
-    }
-
-    Login = function () {
-        var correctPass = 'newyork1';
-        var correctUser = 'test';
-
-        var login = document.getElementById('login').value.toLowerCase();
-        var password = document.getElementById('password').value;
-
-        if (login === correctUser && password === correctPass) {
-            window.location.href = window.location = 'Deposit';
-        }
-
-        if (login.trim() === '' || password.trim() === '') {
-            ShowError("User name and password cannot be empty!");
-            return;
-        }
-
-        if (login !== correctUser || password !== correctPass) {
-            ShowError("Incorrect login or password!");
-            return;
-        }
-
-        if (login !== correctUser && password !== correctPass) {
-            ShowError("'" + login + "' user doesn't exist!");
-            return;
-        }
-    }
-
-    RemindPassword = function () {
-        document.getElementById('remindPasswordView').hidden = false;
-    }
-
-    ShowError = function(error) {
-        document.getElementById('errorMessage').textContent = error;
-    }
-</script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script src="~/js/login.js" asp-append-version="true"></script>
