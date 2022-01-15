@@ -53,7 +53,7 @@ namespace WebSite.DB
             Constants.Add("numberFormat", "123,456,789.00", "123.456.789,00", "123 456 789.00", "123 456 789,00");
 
             Constants.Delete("currency");
-            Constants.Add("currency", "$ - US dollar", "€ - Euro", "£ - Great Britain Pound", "₴ - Ukrainian hryvnia");
+            Constants.Add("currency", "$ - US Dollar", "€ - Euro", "£ - Great Britain Pound", "₴ - Ukrainian Hryvnia");
 
             // Wrong months order, mistake in month name
             Constants.Delete("month");
