@@ -1,6 +1,9 @@
 using CalculatorTests.Pages;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.WaitHelpers;
+using System;
 
 namespace CalculatorTests
 {
@@ -86,6 +89,8 @@ namespace CalculatorTests
             LoginPage loginPage = new LoginPage(Driver);
             loginPage.OpenRemindPasswordView();
             loginPage.RemindPass("test@test.com");
+            new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
+                 .Until(ExpectedConditions.AlertIsPresent());
             string alertText = Driver.SwitchTo().Alert().Text;
 
             // Assert
@@ -127,6 +132,8 @@ namespace CalculatorTests
             Driver.SwitchTo().Frame("remindPasswordView");
             Driver.FindElement(By.Id("email")).SendKeys("test@test.com");
             Driver.FindElement(By.XPath("//button[contains(text(),'Send')]")).Click();
+            new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
+             .Until(ExpectedConditions.AlertIsPresent());
             Driver.SwitchTo().Alert().Accept();
             Driver.SwitchTo().DefaultContent();
             Driver.FindElement(By.Id("remindBtn")).Click();

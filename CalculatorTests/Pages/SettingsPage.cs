@@ -1,5 +1,7 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.WaitHelpers;
+using System;
 
 namespace CalculatorTests.Pages
 {
@@ -15,32 +17,27 @@ namespace CalculatorTests.Pages
         public IWebElement CancelBtn => _driver.FindElement(By.XPath($"//button[contains(text(),'Cancel')]"));
 
 
-        public SelectElement DateFormatDrdwn => new SelectElement(_driver.FindElement(By.XPath($"//td[contains(text(),'Date format:')]/ ..//select")));
-        public SelectElement NumberFormatDrdwn => new SelectElement(_driver.FindElement(By.XPath($"//td[contains(text(),'Number format:')]/ ..//select")));
-        public SelectElement DefaultCurrencyDrdwn => new SelectElement(_driver.FindElement(By.XPath($"//th[contains(text(),'Default currency:')]/ ..//select")));
+        public SelectElement DateFormatDrdwn => new SelectElement(_driver.FindElement(By.XPath($"//th[contains(text(),'Date format:')]/ ..//select[@id='dateFormat']")));
+        public SelectElement NumberFormatDrdwn => new SelectElement(_driver.FindElement(By.XPath($"//th[contains(text(),'Number format:')]/ ..//select[@id='numberFormat']")));
+        public SelectElement DefaultCurrencyDrdwn => new SelectElement(_driver.FindElement(By.XPath($"//th[contains(text(),'Default currency:')]/ ..//select[@id='currency']")));
 
-        public string DateFormatValue => _driver.FindElement(By.XPath($"//td[contains(text(),'Date format:')]/ ..//select")).GetAttribute("value");
-        public string NumberFormatValue => _driver.FindElement(By.XPath($"//td[contains(text(),'Number format:')]/ ..//select")).GetAttribute("value");
-        public string DefaultCurrencyValue => _driver.FindElement(By.XPath($"//th[contains(text(),'Defalut currency:')]/ ..//select")).GetAttribute("value");
+        public string DateFormatValue => _driver.FindElement(By.XPath($"//th[contains(text(),'Date format:')]/ ..//select[@id='dateFormat']")).GetAttribute("value");
+        public string NumberFormatValue => _driver.FindElement(By.XPath($"//th[contains(text(),'Number format:')]/ ..//select[@id='numberFormat']")).GetAttribute("value");
+        public string DefaultCurrencyValue => _driver.FindElement(By.XPath($"//th[contains(text(),'Default currency:')]/ ..//select[@id='currency']")).GetAttribute("value");
 
         public (bool IsSuccessful, string Text) SettingsSave()
         {
             SaveBtn.Click();
-            try
             {
+                new WebDriverWait(_driver, TimeSpan.FromSeconds(2))
+                 .Until(ExpectedConditions.AlertIsPresent());
                 IAlert alert = _driver.SwitchTo().Alert();
                 string result = alert.Text;
                 alert.Accept();
                 _driver.SwitchTo().ParentFrame();
                 return (true, result);
             }
-            catch
-            {
-                string result = _driver.FindElement(By.Id("message")).Text;
-                _driver.SwitchTo().ParentFrame();
-                return (false, result);
-            }
-        }
+}
 
 
         public string DateFormat

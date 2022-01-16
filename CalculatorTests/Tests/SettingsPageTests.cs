@@ -1,5 +1,8 @@
 ﻿using CalculatorTests.Pages;
 using NUnit.Framework;
+using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.WaitHelpers;
+using System;
 
 namespace CalculatorTests
 {
@@ -28,6 +31,8 @@ namespace CalculatorTests
             settingsPage = new SettingsPage(Driver);
             settingsPage.DateFormat = dateFormat;
             settingsPage.SaveBtn.Click();
+            new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
+                 .Until(ExpectedConditions.AlertIsPresent());
             string alertText = Driver.SwitchTo().Alert().Text;
 
             Assert.AreEqual($"Changes are saved!", alertText);
@@ -45,7 +50,7 @@ namespace CalculatorTests
             Assert.AreEqual(defaultDateFormat, settingsPage.DateFormatValue);
         }
 
-        [TestCase("dd/MM/yyyy", "123,456,789.00", "$ - US dollar")]
+        [TestCase("dd/MM/yyyy", "123,456,789.00", "$ - US Dollar")]
         [TestCase("dd-MM-yyyy", "123.456.789,00", "€ - Euro")]
         [TestCase("MM/dd/yyyy", "123 456 789.00", "£ - Great Britain Pound")]
         [TestCase("MM dd yyyy", "123 456 789,00", "£ - Great Britain Pound")]
@@ -58,14 +63,18 @@ namespace CalculatorTests
             settingsPage.CurrencyFormat = defaultCurrency;
             //settingsPage.SaveBtn.Click();
             //Driver.SwitchTo().Alert().Accept();
+            System.Threading.Thread.Sleep(4000);
             settingsPage.SettingsSave();
             //Driver.SwitchTo().Alert().Accept();
             calculatorPage.Settings();
+            System.Threading.Thread.Sleep(2000);
 
             Assert.Multiple(() =>
             {
-                Assert.AreEqual(dateFormat, settingsPage.DateFormatValue);
+                Assert.AreEqual(dateFormat, settingsPage.DateFormatValue); 
+                System.Threading.Thread.Sleep(2000);
                 Assert.AreEqual(defaultCurrency, settingsPage.DefaultCurrencyValue);
+                System.Threading.Thread.Sleep(2000);
                 Assert.AreEqual(numberFormat, settingsPage.NumberFormatValue); ///////////////              
             });
 
@@ -108,7 +117,7 @@ namespace CalculatorTests
 
         }
 
-        [TestCase("$ - US dollar", "$")]
+        [TestCase("$ - US Dollar", "$")]
         [TestCase("€ - Euro", "€")]
         [TestCase("£ - Great Britain Pound", "£")]
         public void CheckSignDefaultCurrencyChanged( string defaultCurrency, string result)

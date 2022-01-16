@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.Reflection;
 using NUnit.Framework;
 using OpenQA.Selenium;
@@ -25,7 +26,11 @@ namespace CalculatorTests
             options.AddArgument("--silent");
             options.AddArgument("log-level=3");
 
-            return new ChromeDriver(chromeDriverService, options);
+            IWebDriver driver = new ChromeDriver(chromeDriverService, options);
+            driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(60);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+
+            return driver;
         }
 
         [TearDown]

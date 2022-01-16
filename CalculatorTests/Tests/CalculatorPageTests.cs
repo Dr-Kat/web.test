@@ -19,11 +19,11 @@ namespace CalculatorTests
             loginPage.Login("test", "newyork1");
         }
 
-        [TestCase ("1000", "25", "365", "365", "1250.00", "250.00")]
-        [TestCase("1000", "25", "360", "365", "1246.58", "246.58")]
-        [TestCase("1000", "25", "25", "365", "1017.12", "17.12")]
-        [TestCase("1000", "25", "360", "360", "1250.00", "250.00")]
-        [TestCase("1000", "25", "1", "360", "1000.69", "0.69")]
+        [TestCase ("1000", "25", "365", "365", "1,250.00", "250.00")]
+        [TestCase("1000", "25", "360", "365", "1,246.58", "246.58")]
+        [TestCase("1000", "25", "25", "365", "1,017.12", "17.12")]
+        [TestCase("1000", "25", "360", "360", "1,250.00", "250.00")]
+        [TestCase("1000", "25", "1", "360", "1,000.69", "0.69")]
         public void CalculateTest(string amount, string rate, string term, string financialYear, string expectedIncom, string expectedInterest)
         {
             // Arrange
@@ -67,9 +67,10 @@ namespace CalculatorTests
         {
             // Arrange
             calculatorPage = new CalculatorPage(Driver);
-            Driver.Url = $"{BaseUrl}/Deposit";
+            Driver.Url = $"{BaseUrl}/Calculator";
 
             // Assert
+
             Assert.AreEqual(expectedText, calculatorPage.GetLabelText(actualText));
         }
 
