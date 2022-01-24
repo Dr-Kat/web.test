@@ -25,7 +25,7 @@ namespace CalculatorTests.Pages
         public string NumberFormatValue => _driver.FindElement(By.XPath($"//th[contains(text(),'Number format:')]/ ..//select[@id='numberFormat']")).GetAttribute("value");
         public string DefaultCurrencyValue => _driver.FindElement(By.XPath($"//th[contains(text(),'Default currency:')]/ ..//select[@id='currency']")).GetAttribute("value");
 
-        public (bool IsSuccessful, string Text) SettingsSave()
+        public string  SettingsSave()
         {
             SaveBtn.Click();
             {
@@ -35,7 +35,7 @@ namespace CalculatorTests.Pages
                 string result = alert.Text;
                 alert.Accept();
                 _driver.SwitchTo().ParentFrame();
-                return (true, result);
+                return result;
             }
 }
 

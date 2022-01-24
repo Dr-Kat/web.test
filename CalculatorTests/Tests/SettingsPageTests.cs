@@ -3,6 +3,7 @@ using NUnit.Framework;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System;
+using System.Globalization;
 
 namespace CalculatorTests
 {
@@ -53,73 +54,29 @@ namespace CalculatorTests
         [TestCase("dd/MM/yyyy", "123,456,789.00", "$ - US Dollar")]
         [TestCase("dd-MM-yyyy", "123.456.789,00", "€ - Euro")]
         [TestCase("MM/dd/yyyy", "123 456 789.00", "£ - Great Britain Pound")]
-        [TestCase("MM dd yyyy", "123 456 789,00", "£ - Great Britain Pound")]
+        [TestCase("MM dd yyyy", "123 456 789,00", "₴ - Ukrainian Hryvnia")]
 
         public void SettingsSaved(string dateFormat, string numberFormat, string defaultCurrency)
         {
             settingsPage = new SettingsPage(Driver);
             settingsPage.DateFormat = dateFormat;
             settingsPage.NumberFormat = numberFormat;
-            settingsPage.CurrencyFormat = defaultCurrency;
-            //settingsPage.SaveBtn.Click();
-            //Driver.SwitchTo().Alert().Accept();
-            System.Threading.Thread.Sleep(4000);
+            settingsPage.CurrencyFormat = defaultCurrency;;
             settingsPage.SettingsSave();
-            //Driver.SwitchTo().Alert().Accept();
             calculatorPage.Settings();
-            System.Threading.Thread.Sleep(2000);
 
             Assert.Multiple(() =>
             {
-                Assert.AreEqual(dateFormat, settingsPage.DateFormatValue); 
-                System.Threading.Thread.Sleep(2000);
+                Assert.AreEqual(dateFormat, settingsPage.DateFormatValue);
                 Assert.AreEqual(defaultCurrency, settingsPage.DefaultCurrencyValue);
-                System.Threading.Thread.Sleep(2000);
-                Assert.AreEqual(numberFormat, settingsPage.NumberFormatValue); ///////////////              
+                Assert.AreEqual(numberFormat, settingsPage.NumberFormatValue);             
             });
-
-            //string alertText = Driver.SwitchTo().Alert().Text;
-
-            // string defaultValue = calculatorPage.StartDate; // StartDate = get
-
-            //Assert.AreEqual($"Changes are saved!", alertText);
-            //Assert.AreEqual(DateTime.Today.ToString("d/M/yyyy"), defaultValue);
-
-
-            //// Act
-            //LoginPage loginPage = new LoginPage(Driver);
-            //loginPage.OpenRemindPasswordView();
-            //loginPage.RemindPass("test@test.com");
-            //string alertText = Driver.SwitchTo().Alert().Text;
-
-            //// Assert
-            //Assert.AreEqual($"Email with instructions was sent to test@test.com", alertText);
-            //Driver.SwitchTo().Alert().Accept();
-
-            {
-                // Act
-                //    calculatorPage = new CalculatorPage(Driver);
-                //    calculatorPage.StartDate = date;
-                //    string interest = calculatorPage.InterestFld.GetAttribute("value");
-
-                //    // Assert          
-                //    Assert.AreEqual("0.00", interest);
-            }
-        }
-
-        //[TestCase(currentDate)]
-        //[TestCase("90236")]
-        //[TestCase(Euro)]
-        public void SettingsChanged()
-        {
-
-
-
         }
 
         [TestCase("$ - US Dollar", "$")]
         [TestCase("€ - Euro", "€")]
         [TestCase("£ - Great Britain Pound", "£")]
+        [TestCase("₴ - Ukrainian Hryvnia", "₴")]
         public void CheckSignDefaultCurrencyChanged( string defaultCurrency, string result)
         {
             settingsPage = new SettingsPage(Driver);
@@ -129,5 +86,49 @@ namespace CalculatorTests
             Assert.AreEqual(result, calculatorPage.DepAmountSign.Text);
 
         }
+
+        [TestCase("dd/MM/yyyy")]
+        [TestCase("dd-MM-yyyy")]
+        [TestCase("MM/dd/yyyy")]
+        [TestCase("MM dd yyyy")]
+        public void CheckCalculatorEndDateChangedFormat(string dateFormat)
+        {
+            settingsPage = new SettingsPage(Driver);
+            settingsPage.DateFormat = dateFormat;
+            settingsPage.SettingsSave();
+            calculatorPage.Calculate("100000","100","365","365");
+            string endDate = calculatorPage.EndDate;
+            //var actual = calculatorPage.EndDate;
+            //var expected = DateTime.Today.AddMonths(12).ToString(dateFormat);
+            //var numberFormatGenral = string.Format();
+
+
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(DateTime.Today.AddMonths(12).Date, DateTime.ParseExact(endDate, dateFormat, CultureInfo.InvariantCulture).Date);
+                //Assert.AreEqual(expected, actual);
+            });     
+        }
+        [TestCase("123,456,789.00", "100,000.00", "200,000.00")]
+        [TestCase("123.456.789,00", "100.000,00", "200.000,00")]
+        [TestCase("123 456 789.00", "100 000.00", "200 000.00")]
+        [TestCase("123 456 789,00", "100 000,00", "200 000,00")]
+        public void CheckCalculatorValuesFieldsChangedFormat(string numberFormat, string interestFormatExpected, string incomeFormatExpected)
+        {
+            settingsPage = new SettingsPage(Driver);
+            settingsPage = new SettingsPage(Driver);
+            settingsPage.NumberFormat = numberFormat;
+            settingsPage.SettingsSave();
+            calculatorPage.Calculate("100000", "100", "365", "365");
+            string interestFormat = calculatorPage.InterestFld.GetAttribute("value");
+            string incomeFormat = calculatorPage.IncomeFld.GetAttribute("value");
+
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(interestFormatExpected, interestFormat);
+                Assert.AreEqual(incomeFormatExpected, incomeFormat);
+            });
+        }
     }
+
 }

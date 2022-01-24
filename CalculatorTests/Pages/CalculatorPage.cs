@@ -30,6 +30,8 @@ namespace CalculatorTests.Pages
 
         public IWebElement CalculateBtn => _driver.FindElement(By.Id("calculateBtn"));
 
+        public IWebElement LogoutLink => _driver.FindElement(By.XPath($"//div[contains(text(),'Logout')]"));
+
         public SelectElement DateDayDrdwn => new SelectElement(_driver.FindElement(By.XPath($"//td[contains(text(),'Start date: *')]/ ..//select[@id='day']")));
 
         public SelectElement DateMonthDrdwn => new SelectElement(_driver.FindElement(By.XPath($"//td[contains(text(),'Start date: *')]/ ..//select[@id='month']")));

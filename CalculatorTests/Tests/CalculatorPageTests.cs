@@ -43,25 +43,6 @@ namespace CalculatorTests
             });
         }
 
-        //[Test]
-        //public void Logout()
-        //{
-        //    // Arrange
-        //    Driver.Url = BaseUrl;
-
-        //    // Act
-        //    Driver.FindElement(By.XPath("/html/body/div/div/div")).Click();
-        //    Driver.FindElement(By.XPath("/html/body/div/div/div[1]")).Click();
-        //    // Act        
-        //    Driver.FindElement(By.XPath("//div[contains (text(),'Settings')]")).Click();
-        //    Driver.FindElement(By.XPath("//div[contains (text(),'Logout')]")).Click();
-
-        //    // Assert
-        //    string currentURL = Driver.Url;
-        //    Assert.AreEqual(BaseUrl, currentURL);
-        //}
-        // After Logout button is removed from Settings to $"{BaseUrl}/Deposit", Test need to be update
-
         [TestCase("* - mandatory fields", "mandatory")]
         public void Deposit_Texts(string expectedText, string actualText)
         {
@@ -73,6 +54,18 @@ namespace CalculatorTests
 
             Assert.AreEqual(expectedText, calculatorPage.GetLabelText(actualText));
         }
+
+        [Test]
+        public void LogoutLink()
+        {
+            calculatorPage = new CalculatorPage(Driver);
+            calculatorPage.LogoutLink.Click();
+
+            // Assert
+            string currentURL = Driver.Url;
+            Assert.AreEqual(BaseUrl, currentURL);
+        }
+        // After Logout button is removed from Settings to $"{BaseUrl}/Deposit", Test need to be update
 
         //[Test]
         //public void Logout_pageback()
@@ -133,18 +126,6 @@ namespace CalculatorTests
             Assert.AreEqual(result, calculatorPage.EndDate);          
         }
 
-        //[TestCase("10/12/2023", "120", "08/04/2024")]
-        //public void StartDateEarlierThenToday(string date, string term, string result)
-        //{
-        //    // Act
-        //    calculatorPage = new CalculatorPage(Driver);
-        //    calculatorPage.StartDate = date;
-        //    calculatorPage.InvestTermFld.SendKeys(term);
-
-        //    // Assert
-        //    Assert.AreEqual(result, calculatorPage.EndDate);
-        //}
-
         [Test]
 
         public void StartDateDefaultValue()
@@ -153,6 +134,17 @@ namespace CalculatorTests
             string defaultValue = calculatorPage.StartDate; // StartDate = get
 
             Assert.AreEqual(DateTime.Today.ToString("d/M/yyyy"),defaultValue);
+        }
+
+        [Test]
+
+        public void StartDateEarlierThenToday()
+        {
+            calculatorPage = new CalculatorPage(Driver);
+            var startDate = DateTime.Today.AddDays(-1).ToString("dd/MM/yyyy"); /// .Date doesn't work
+            calculatorPage.StartDate = startDate;
+           
+           Assert.AreEqual(DateTime.Today.ToString("dd/M/yyyy"), calculatorPage.StartDate);
         }
 
         [Test]
