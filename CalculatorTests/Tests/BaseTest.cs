@@ -28,7 +28,7 @@ namespace CalculatorTests
 
             IWebDriver driver = new ChromeDriver(chromeDriverService, options);
             driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(60);
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(30);
 
             return driver;
         }
