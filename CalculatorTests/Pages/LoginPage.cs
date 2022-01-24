@@ -41,7 +41,7 @@ namespace CalculatorTests.Pages
             LoginFld.SendKeys(login);
             PasswordFld.SendKeys(password);
             LoginBtn.Click();
-            new WebDriverWait(_driver, TimeSpan.FromSeconds(5))
+            new WebDriverWait(_driver, TimeSpan.FromSeconds(10))
                 .Until(ExpectedConditions.VisibilityOfAllElementsLocatedBy(By.XPath("//*[@id='calculateBtn' or @id ='errorMessage']")));
         }
 
