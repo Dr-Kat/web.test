@@ -89,7 +89,7 @@ namespace CalculatorTests
             LoginPage loginPage = new LoginPage(Driver);
             loginPage.OpenRemindPasswordView();
             loginPage.RemindPass("test@test.com");
-            new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
+            new WebDriverWait(Driver, TimeSpan.FromSeconds(10))
                  .Until(ExpectedConditions.AlertIsPresent());
             string alertText = Driver.SwitchTo().Alert().Text;
 
@@ -132,7 +132,7 @@ namespace CalculatorTests
             Driver.SwitchTo().Frame("remindPasswordView");
             Driver.FindElement(By.Id("email")).SendKeys("test@test.com");
             Driver.FindElement(By.XPath("//button[contains(text(),'Send')]")).Click();
-            new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
+            new WebDriverWait(Driver, TimeSpan.FromSeconds(10))
              .Until(ExpectedConditions.AlertIsPresent());
             Driver.SwitchTo().Alert().Accept();
             Driver.SwitchTo().DefaultContent();

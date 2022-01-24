@@ -41,14 +41,14 @@ namespace CalculatorTests.Pages
             LoginFld.SendKeys(login);
             PasswordFld.SendKeys(password);
             LoginBtn.Click();
-            new WebDriverWait(_driver, TimeSpan.FromSeconds(15))
+            new WebDriverWait(_driver, TimeSpan.FromSeconds(3))
                 .Until(ExpectedConditions.VisibilityOfAllElementsLocatedBy(By.XPath("//*[@id='calculateBtn' or @id ='errorMessage']")));
         }
 
         public IWebDriver OpenRemindPasswordView()
         {
             _driver.FindElement(By.Id("remindBtn")).Click();
-            new WebDriverWait(_driver, TimeSpan.FromSeconds(15))
+            new WebDriverWait(_driver, TimeSpan.FromSeconds(3))
                 .Until(ExpectedConditions.VisibilityOfAllElementsLocatedBy(By.XPath("//*[@id='remindPasswordView']")));
             return _driver.SwitchTo().Frame("remindPasswordView");
         }
