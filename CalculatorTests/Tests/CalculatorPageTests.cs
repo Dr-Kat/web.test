@@ -31,6 +31,7 @@ namespace CalculatorTests
 
             // Act
             calculatorPage = new CalculatorPage(Driver);
+            System.Threading.Thread.Sleep(2000);
             calculatorPage.Calculate(amount,rate,term,financialYear);
             string income = calculatorPage.IncomeFld.GetAttribute("value");
             string interest = calculatorPage.InterestFld.GetAttribute("value");
