@@ -30,4 +30,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with: 
           name: ScreenShots
-          path: ./CallculatorTests/bin/Release/net5.0/ScreenShots
+          path: ./CalculatorTests/bin/Release/net5.0/ScreenShots
