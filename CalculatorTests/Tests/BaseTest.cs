@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Configuration;
+using System.IO;
 using System.Reflection;
 using NUnit.Framework;
+using NUnit.Framework.Interfaces;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.Extensions;
 
 namespace CalculatorTests
 {
@@ -36,6 +39,17 @@ namespace CalculatorTests
         [TearDown]
         public void Close()
         {
+            if (TestContext.CurrentContext.Result.Outcome.Status == TestStatus.Failed)
+            {
+                var test = TestContext.CurrentContext.Test;
+                var folder = $"{Environment.CurrentDirectory}/ScreenShots";
+                var fileName = $"{folder}/{test.ClassName}_{test.MethodName}_{DateTime.Now:mmss}.png";
+
+                Directory.CreateDirectory(folder);
+                Driver.TakeScreenshot().SaveAsFile(fileName, ScreenshotImageFormat.Png);
+                TestContext.AddTestAttachment(fileName);
+            }
+
             Driver.Quit();
         }
     }

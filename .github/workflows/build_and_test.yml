@@ -24,3 +24,10 @@ jobs:
         
       - name: Test
         run: dotnet test Callculator.sln --configuration Release --no-restore --verbosity Minimal
+
+      - name: Screenshots - Publish
+        if: success() || failure()
+        uses: actions/upload-artifact@v2
+        with: 
+          name: ScreenShots
+          path: ./Callculator/bin/Release/net5.0/ScreenShots
