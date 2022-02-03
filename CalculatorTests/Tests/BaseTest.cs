@@ -41,13 +41,13 @@ namespace CalculatorTests
         {
             if (TestContext.CurrentContext.Result.Outcome.Status == TestStatus.Failed)
             {
-                var test = TestContext.CurrentContext.Test;
+                var fileName = TestContext.CurrentContext.Test.FullName.Replace("\"", "`");
                 var folder = $"{Environment.CurrentDirectory}/ScreenShots";
-                var fileName = $"{folder}/{test.ClassName}_{test.MethodName}_{DateTime.Now:mmss}.png";
+                var filePath = $"{folder}/{fileName}.png";
 
                 Directory.CreateDirectory(folder);
-                Driver.TakeScreenshot().SaveAsFile(fileName, ScreenshotImageFormat.Png);
-                TestContext.AddTestAttachment(fileName);
+                Driver.TakeScreenshot().SaveAsFile(filePath, ScreenshotImageFormat.Png);
+                TestContext.AddTestAttachment(filePath);
             }
 
             Driver.Quit();
