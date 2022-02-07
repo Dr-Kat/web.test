@@ -116,7 +116,6 @@ namespace CalculatorTests
         public void CheckCalculatorValuesFieldsChangedFormat(string numberFormat, string interestFormatExpected, string incomeFormatExpected)
         {
             settingsPage = new SettingsPage(Driver);
-            settingsPage = new SettingsPage(Driver);
             settingsPage.NumberFormat = numberFormat;
             settingsPage.SettingsSave();
             calculatorPage.Calculate("100000", "100", "365", "365");
