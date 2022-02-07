@@ -19,11 +19,11 @@ namespace CalculatorTests
             loginPage.Login("test", "newyork1");
         }
 
-        [TestCase ("1000", "25", "365", "365", "1 250,00", "250,00")]
-        [TestCase("1000", "25", "360", "365", "1 246,58", "246,58")]
-        [TestCase("1000", "25", "25", "365", "1 017,12", "17,12")]
-        [TestCase("1000", "25", "360", "360", "1 250,00", "250,00")]
-        [TestCase("1000", "25", "1", "360", "1 000,69", "0,69")]
+        [TestCase ("1000", "25", "365", "365", "1,250.00", "250.00")]
+        [TestCase("1000", "25", "360", "365", "1,246.58", "246.58")]
+        [TestCase("1000", "25", "25", "365", "1,017.12", "17.12")]
+        [TestCase("1000", "25", "360", "360", "1,250.00", "250.00")]
+        [TestCase("1000", "25", "1", "360", "1,000.69", "0.69")]
         public void CalculateTest(string amount, string rate, string term, string financialYear, string expectedIncom, string expectedInterest)
         {
             // Arrange
@@ -96,7 +96,7 @@ namespace CalculatorTests
             string interest = calculatorPage.InterestFld.GetAttribute("value");
 
             // Assert          
-            Assert.AreEqual("0,00", interest);
+            Assert.AreEqual("0.00", interest);
         }
 
         [TestCase("1/1/2022", "365")]
@@ -109,7 +109,7 @@ namespace CalculatorTests
             string interest = calculatorPage.InterestFld.GetAttribute("value");
 
             // Assert          
-            Assert.AreEqual("0,00", interest);
+            Assert.AreEqual("0.00", interest);
         }
 
         [TestCase("1/1/2024", "60", "01/03/2024")]
