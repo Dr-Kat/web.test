@@ -41,7 +41,7 @@ namespace CalculatorTests
         {
             if (TestContext.CurrentContext.Result.Outcome.Status == TestStatus.Failed)
             {
-                var fileName = TestContext.CurrentContext.Test.FullName.Replace("\"", "`");
+                var fileName = TestContext.CurrentContext.Test.FullName.Replace("\"", "`").Replace("\\", ".");
                 var folder = $"{Environment.CurrentDirectory}/ScreenShots";
                 var filePath = $"{folder}/{fileName}.png";
 
