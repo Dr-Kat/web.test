@@ -2,6 +2,7 @@
 using System.Globalization;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.WaitHelpers;
 
 namespace CalculatorTests.Pages
 {
@@ -98,6 +99,9 @@ namespace CalculatorTests.Pages
             InvestTermFld.SendKeys(term);
             FinancialYear = int.Parse(financialYear);
             CalculateBtn.Click();
+
+            new WebDriverWait(_driver, TimeSpan.FromSeconds(5))
+                .Until(ExpectedConditions.ElementToBeClickable(By.Id("calculateBtn")));
         }
 
         public IWebElement SettingsLink => _driver.FindElement(By.XPath($"//div[contains (text(),'Settings')]"));
