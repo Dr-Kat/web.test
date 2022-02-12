@@ -1,8 +1,6 @@
-﻿using CalculatorTests.Pages;
+﻿using System;
+using CalculatorTests.Pages;
 using NUnit.Framework;
-using OpenQA.Selenium;
-using System;
-using System.Threading;
 
 namespace CalculatorTests
 {
@@ -21,11 +19,11 @@ namespace CalculatorTests
             loginPage.Login("test", "newyork1");
         }
 
-        [TestCase ("1000", "25", "365", "365", "1250.00", "250.00")]
-        [TestCase("1000", "25", "360", "365", "1246.58", "246.58")]
-        [TestCase("1000", "25", "25", "365", "1017.12", "17.12")]
-        [TestCase("1000", "25", "360", "360", "1250.00", "250.00")]
-        [TestCase("1000", "25", "1", "360", "1000.69", "0.69")]
+        [TestCase ("1000", "25", "365", "365", "1,250.00", "250.00")]
+        [TestCase("1000", "25", "360", "365", "1,246.58", "246.58")]
+        [TestCase("1000", "25", "25", "365", "1,017.12", "17.12")]
+        [TestCase("1000", "25", "360", "360", "1,250.00", "250.00")]
+        [TestCase("1000", "25", "1", "360", "1,000.69", "0.69")]
         public void CalculateTest(string amount, string rate, string term, string financialYear, string expectedIncom, string expectedInterest)
         {
             // Arrange
@@ -45,35 +43,29 @@ namespace CalculatorTests
             });
         }
 
-        //[Test]
-        //public void Logout()
-        //{
-        //    // Arrange
-        //    Driver.Url = BaseUrl;
-
-        //    // Act
-        //    Driver.FindElement(By.XPath("/html/body/div/div/div")).Click();
-        //    Driver.FindElement(By.XPath("/html/body/div/div/div[1]")).Click();
-        //    // Act        
-        //    Driver.FindElement(By.XPath("//div[contains (text(),'Settings')]")).Click();
-        //    Driver.FindElement(By.XPath("//div[contains (text(),'Logout')]")).Click();
-
-        //    // Assert
-        //    string currentURL = Driver.Url;
-        //    Assert.AreEqual(BaseUrl, currentURL);
-        //}
-        // After Logout button is removed from Settings to $"{BaseUrl}/Deposit", Test need to be update
-
         [TestCase("* - mandatory fields", "mandatory")]
         public void Deposit_Texts(string expectedText, string actualText)
         {
             // Arrange
             calculatorPage = new CalculatorPage(Driver);
-            Driver.Url = $"{BaseUrl}/Deposit";
+            Driver.Url = $"{BaseUrl}/Calculator";
 
             // Assert
+
             Assert.AreEqual(expectedText, calculatorPage.GetLabelText(actualText));
         }
+
+        [Test]
+        public void LogoutLink()
+        {
+            calculatorPage = new CalculatorPage(Driver);
+            calculatorPage.LogoutLink.Click();
+
+            // Assert
+            string currentURL = Driver.Url;
+            Assert.AreEqual(BaseUrl+'/', currentURL);
+        }
+        // After Logout button is removed from Settings to $"{BaseUrl}/Deposit", Test need to be update
 
         //[Test]
         //public void Logout_pageback()
@@ -128,7 +120,7 @@ namespace CalculatorTests
             // Act
             calculatorPage = new CalculatorPage(Driver);
             calculatorPage.StartDate = date;
-            calculatorPage.InvestTermFld.SendKeys(term);
+            calculatorPage.Calculate("100", "1", term, "365");
 
             // Assert
             Assert.AreEqual(result, calculatorPage.EndDate);          
@@ -142,6 +134,17 @@ namespace CalculatorTests
             string defaultValue = calculatorPage.StartDate; // StartDate = get
 
             Assert.AreEqual(DateTime.Today.ToString("d/M/yyyy"),defaultValue);
+        }
+
+        [Test]
+
+        public void StartDateEarlierThenToday()
+        {
+            calculatorPage = new CalculatorPage(Driver);
+            var startDate = DateTime.Today.AddDays(-1).ToString("d/MM/yyyy"); /// .Date doesn't work
+            calculatorPage.StartDate = startDate;
+           
+           Assert.AreEqual(DateTime.Today.ToString("d/M/yyyy"), calculatorPage.StartDate);
         }
 
         [Test]

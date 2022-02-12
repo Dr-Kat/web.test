@@ -1,6 +1,9 @@
+using System;
 using CalculatorTests.Pages;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.WaitHelpers;
 
 namespace CalculatorTests
 {
@@ -63,7 +66,7 @@ namespace CalculatorTests
             loginPage.Login(login, password);
 
             // Assert
-            Assert.AreEqual($"{BaseUrl}/Deposit", Driver.Url);
+            Assert.AreEqual($"{BaseUrl}/Calculator", Driver.Url);
         }
 
         [Test]
@@ -86,6 +89,8 @@ namespace CalculatorTests
             LoginPage loginPage = new LoginPage(Driver);
             loginPage.OpenRemindPasswordView();
             loginPage.RemindPass("test@test.com");
+            new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
+                 .Until(ExpectedConditions.AlertIsPresent());
             string alertText = Driver.SwitchTo().Alert().Text;
 
             // Assert
@@ -109,14 +114,19 @@ namespace CalculatorTests
         public void Remind_Password_Email_Not_Exist()
         {
             // Act
-            Driver.FindElement(By.Id("remindBtn")).Click();
-            Driver.SwitchTo().Frame("remindPasswordView");
-            Driver.FindElement(By.Id("email")).SendKeys("test12@test.com");
-            Driver.FindElement(By.XPath("//button[contains(text(),'Send')]")).Click();
-            string errorText = Driver.FindElement(By.Id("message")).Text;
+            LoginPage loginPage = new LoginPage(Driver);
+            loginPage.OpenRemindPasswordView();
+            var result = loginPage.RemindPass2("test12@test.com");
+
+            //Driver.FindElement(By.Id("remindBtn")).Click();
+            //Driver.SwitchTo().Frame("remindPasswordView");
+            //Driver.FindElement(By.Id("email")).SendKeys("test12@test.com");
+            //Driver.FindElement(By.XPath("//button[contains(text(),'Send')]")).Click();
+            //string errorText = Driver.FindElement(By.Id("message")).Text;
 
             // Assert
-            Assert.AreEqual("No user was found", errorText);
+            Assert.IsFalse(result.IsSuccessful);
+            Assert.AreEqual("No user was found", result.Text);
         }
 
         [Test]
@@ -127,6 +137,8 @@ namespace CalculatorTests
             Driver.SwitchTo().Frame("remindPasswordView");
             Driver.FindElement(By.Id("email")).SendKeys("test@test.com");
             Driver.FindElement(By.XPath("//button[contains(text(),'Send')]")).Click();
+            new WebDriverWait(Driver, TimeSpan.FromSeconds(2))
+             .Until(ExpectedConditions.AlertIsPresent());
             Driver.SwitchTo().Alert().Accept();
             Driver.SwitchTo().DefaultContent();
             Driver.FindElement(By.Id("remindBtn")).Click();

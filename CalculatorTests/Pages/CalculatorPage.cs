@@ -1,11 +1,8 @@
-﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.WaitHelpers;
 
 namespace CalculatorTests.Pages
 {
@@ -25,10 +22,16 @@ namespace CalculatorTests.Pages
                 return _driver.FindElement(By.XPath($"//td[contains(text(),'Deposit Amount: *')]/ ..//input"));
             }
         }
+        public IWebElement DepAmountSign => _driver.FindElement(By.XPath($"//td[contains(text(),'Deposit Amount: *')]/ ..//td[3]"));
+
 
         public IWebElement RateInterestFld => _driver.FindElement(By.XPath($"//td[contains(text(),'Rate of interest: *')]/ ..//input"));
 
         public IWebElement InvestTermFld => _driver.FindElement(By.XPath($"//td[contains(text(),'Investment Term: *')]/ ..//input"));
+
+        public IWebElement CalculateBtn => _driver.FindElement(By.Id("calculateBtn"));
+
+        public IWebElement LogoutLink => _driver.FindElement(By.XPath($"//div[contains(text(),'Logout')]"));
 
         public SelectElement DateDayDrdwn => new SelectElement(_driver.FindElement(By.XPath($"//td[contains(text(),'Start date: *')]/ ..//select[@id='day']")));
 
@@ -52,9 +55,9 @@ namespace CalculatorTests.Pages
                 int month = int.Parse(value.Split('/')[1]) - 1;
                 string year = value.Split('/')[2];
 
-                DateDayDrdwn.SelectByText(day);
-                DateMonthDrdwn.SelectByIndex(month);
                 DateYearDrdwn.SelectByText(year);
+                DateMonthDrdwn.SelectByIndex(month);
+                DateDayDrdwn.SelectByText(day);
             }
         }
 
@@ -95,6 +98,24 @@ namespace CalculatorTests.Pages
             RateInterestFld.SendKeys(rate);
             InvestTermFld.SendKeys(term);
             FinancialYear = int.Parse(financialYear);
+            CalculateBtn.Click();
+
+            new WebDriverWait(_driver, TimeSpan.FromSeconds(5))
+                .Until(ExpectedConditions.ElementToBeClickable(By.Id("calculateBtn")));
+        }
+
+        public IWebElement SettingsLink => _driver.FindElement(By.XPath($"//div[contains (text(),'Settings')]"));
+        public void Settings()
+        {
+            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(5));
+            var dropdowns = new[] { By.Id("dateFormat"), By.Id("numberFormat"), By.Id("currency") };
+
+            SettingsLink.Click();
+
+            foreach (var dropdown in dropdowns)
+            {
+                wait.Until(ExpectedConditions.ElementToBeClickable(dropdown));
+            }
         }
     }
 }

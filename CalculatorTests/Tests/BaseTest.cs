@@ -1,8 +1,12 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
+using System.IO;
 using System.Reflection;
 using NUnit.Framework;
+using NUnit.Framework.Interfaces;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.Extensions;
 
 namespace CalculatorTests
 {
@@ -25,13 +29,42 @@ namespace CalculatorTests
             options.AddArgument("--silent");
             options.AddArgument("log-level=3");
 
-            return new ChromeDriver(chromeDriverService, options);
+            IWebDriver driver = new ChromeDriver(chromeDriverService, options);
+            driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(60);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(30);
+
+            return driver;
         }
 
         [TearDown]
         public void Close()
         {
-            Driver.Quit();
+            try
+            {
+                if (TestContext.CurrentContext.Result.Outcome.Status == TestStatus.Failed)
+                {
+                    TakeScreenShot();
+                }
+            }
+            catch
+            {
+                /*nothing*/
+            }
+            finally
+            {
+                Driver.Quit();
+            }
+        }
+
+        private void TakeScreenShot()
+        {
+            var fileName = TestContext.CurrentContext.Test.FullName.Replace("\"", "`").Replace("\\", ".");
+            var folder = $"{Environment.CurrentDirectory}/ScreenShots";
+            var filePath = $"{folder}/{fileName}.png";
+
+            Directory.CreateDirectory(folder);
+            Driver.TakeScreenshot().SaveAsFile(filePath, ScreenshotImageFormat.Png);
+            TestContext.AddTestAttachment(filePath);
         }
     }
 }
