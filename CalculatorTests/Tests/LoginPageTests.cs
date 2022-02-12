@@ -1,9 +1,9 @@
+using System;
 using CalculatorTests.Pages;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
-using System;
 
 namespace CalculatorTests
 {
@@ -114,14 +114,19 @@ namespace CalculatorTests
         public void Remind_Password_Email_Not_Exist()
         {
             // Act
-            Driver.FindElement(By.Id("remindBtn")).Click();
-            Driver.SwitchTo().Frame("remindPasswordView");
-            Driver.FindElement(By.Id("email")).SendKeys("test12@test.com");
-            Driver.FindElement(By.XPath("//button[contains(text(),'Send')]")).Click();
-            string errorText = Driver.FindElement(By.Id("message")).Text;
+            LoginPage loginPage = new LoginPage(Driver);
+            loginPage.OpenRemindPasswordView();
+            var result = loginPage.RemindPass2("test12@test.com");
+
+            //Driver.FindElement(By.Id("remindBtn")).Click();
+            //Driver.SwitchTo().Frame("remindPasswordView");
+            //Driver.FindElement(By.Id("email")).SendKeys("test12@test.com");
+            //Driver.FindElement(By.XPath("//button[contains(text(),'Send')]")).Click();
+            //string errorText = Driver.FindElement(By.Id("message")).Text;
 
             // Assert
-            Assert.AreEqual("No user was found", errorText);
+            Assert.IsFalse(result.IsSuccessful);
+            Assert.AreEqual("No user was found", result.Text);
         }
 
         [Test]
