@@ -35,7 +35,9 @@ Date.prototype.yyyymmdd = function () {
     return [(dd > 9 ? '' : '0') + dd, (mm > 9 ? '' : '0') + mm, this.getFullYear()].join('/');
 };
 
-CalculateDate = function () {
+CalculateDate = async function () {
+    await VerifyDate();
+
     // December 32
     var day = document.getElementById('day').selectedIndex + 1;
     //var day = document.getElementById('day').selectedIndex;
@@ -103,6 +105,19 @@ async function ResetMonth() {
     }
 
     return;
+}
+
+async function VerifyDate() {
+    var day = document.getElementById('day').selectedIndex + 1;
+    var month = document.getElementById('month').selectedIndex;
+    var year = document.getElementById('year').value;
+    var date = new Date(year, month, day);
+
+    if (date < new Date()) {
+        await SetCurrentDate();
+    }
+
+    return Promise.resolve('done');
 }
 
 async function SetCurrentDate () {
