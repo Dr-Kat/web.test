@@ -101,6 +101,7 @@ async function SetDropdownValues(id, values, selected) {
     }
 
     dropdown.selectedIndex = selected;
+    dropdown.disabled = false;
     return;
 }
 

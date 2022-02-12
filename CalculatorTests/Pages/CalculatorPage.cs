@@ -55,9 +55,9 @@ namespace CalculatorTests.Pages
                 int month = int.Parse(value.Split('/')[1]) - 1;
                 string year = value.Split('/')[2];
 
-                DateDayDrdwn.SelectByText(day);
-                DateMonthDrdwn.SelectByIndex(month);
                 DateYearDrdwn.SelectByText(year);
+                DateMonthDrdwn.SelectByIndex(month);
+                DateDayDrdwn.SelectByText(day);
             }
         }
 
@@ -107,7 +107,15 @@ namespace CalculatorTests.Pages
         public IWebElement SettingsLink => _driver.FindElement(By.XPath($"//div[contains (text(),'Settings')]"));
         public void Settings()
         {
+            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(5));
+            var dropdowns = new[] { By.Id("dateFormat"), By.Id("numberFormat"), By.Id("currency") };
+
             SettingsLink.Click();
+
+            foreach (var dropdown in dropdowns)
+            {
+                wait.Until(ExpectedConditions.ElementToBeClickable(dropdown));
+            }
         }
     }
 }

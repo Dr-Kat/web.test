@@ -39,18 +39,32 @@ namespace CalculatorTests
         [TearDown]
         public void Close()
         {
-            if (TestContext.CurrentContext.Result.Outcome.Status == TestStatus.Failed)
+            try
             {
-                var fileName = TestContext.CurrentContext.Test.FullName.Replace("\"", "`").Replace("\\", ".");
-                var folder = $"{Environment.CurrentDirectory}/ScreenShots";
-                var filePath = $"{folder}/{fileName}.png";
-
-                Directory.CreateDirectory(folder);
-                Driver.TakeScreenshot().SaveAsFile(filePath, ScreenshotImageFormat.Png);
-                TestContext.AddTestAttachment(filePath);
+                if (TestContext.CurrentContext.Result.Outcome.Status == TestStatus.Failed)
+                {
+                    TakeScreenShot();
+                }
             }
+            catch
+            {
+                /*nothing*/
+            }
+            finally
+            {
+                Driver.Quit();
+            }
+        }
 
-            Driver.Quit();
+        private void TakeScreenShot()
+        {
+            var fileName = TestContext.CurrentContext.Test.FullName.Replace("\"", "`").Replace("\\", ".");
+            var folder = $"{Environment.CurrentDirectory}/ScreenShots";
+            var filePath = $"{folder}/{fileName}.png";
+
+            Directory.CreateDirectory(folder);
+            Driver.TakeScreenshot().SaveAsFile(filePath, ScreenshotImageFormat.Png);
+            TestContext.AddTestAttachment(filePath);
         }
     }
 }
